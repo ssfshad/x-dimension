@@ -76,13 +76,16 @@ export function Learn() {
             {bookCourse && (
               <Reveal delay={0.05}>
                 <div className="my-10 flex flex-col items-center gap-6">
-                  <Book3D
-                    title={l(bookCourse.data.title)}
-                    subtitle={l(bookCourse.data.status)}
-                    label={l(bookCourse.data.title)}
-                    backLabel={t("learn.book.back")}
-                    pages={bookPages}
-                  />
+                  {/* Scaled down on very narrow phones so the rotated cover stays inside the screen. */}
+                  <div className="max-[400px]:origin-center max-[400px]:scale-[0.92]">
+                    <Book3D
+                      title={l(bookCourse.data.title)}
+                      subtitle={l(bookCourse.data.status)}
+                      label={l(bookCourse.data.title)}
+                      backLabel={t("learn.book.back")}
+                      pages={bookPages}
+                    />
+                  </div>
                   <p className="text-center text-sm text-white/70">{t("learn.book.hint")}</p>
                 </div>
               </Reveal>

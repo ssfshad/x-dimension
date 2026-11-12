@@ -2,7 +2,6 @@ import { lazy, Suspense, type ReactNode } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { Toaster } from "sonner";
 import { Book } from "@/components/Book";
-import { FluidCursor } from "@/components/FluidCursor";
 import { Nav } from "@/components/Nav";
 import { PageCorners } from "@/components/PageCorners";
 import { Seo } from "@/components/Seo";
@@ -19,6 +18,8 @@ import { Services } from "@/pages/Services";
 import { Work } from "@/pages/Work";
 
 // The admin panel loads only when someone opens /admin, so visitors never download it.
+// The WebGL cursor is decoration, so it loads after the page is already showing.
+const FluidCursor = lazy(() => import("@/components/FluidCursor").then((m) => ({ default: m.FluidCursor })));
 const Admin = lazy(() => import("@/admin/Admin").then((m) => ({ default: m.Admin })));
 
 function Site() {
@@ -45,7 +46,9 @@ function Site() {
       <Nav />
       <PageCorners />
       {setting("cursor.enabled", true) && (
-        <FluidCursor color={String(setting("brand.accent", "#b0e0e6"))} />
+        <Suspense fallback={null}>
+          <FluidCursor color={String(setting("brand.accent", "#b0e0e6"))} />
+        </Suspense>
       )}
     </>
   );
